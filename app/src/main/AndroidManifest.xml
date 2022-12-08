@@ -13,6 +13,21 @@
         android:theme="@style/Theme.NoteKeeper"
         tools:targetApi="31">
         <activity
+            android:name=".activities.ItemsActivity"
+            android:exported="true"
+            android:label="@string/title_activity_items"
+            android:theme="@style/Theme.NoteKeeper.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
