@@ -1,5 +1,6 @@
 package com.example.notekeeperapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
@@ -9,10 +10,14 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.notekeeperapp.DataManager
 import com.example.notekeeperapp.R
+import com.example.notekeeperapp.adapters.NoteRecyclerAdapter
 import com.example.notekeeperapp.databinding.ActivityItemsBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.content_items.*
 
 class ItemsActivity : AppCompatActivity() {
 
@@ -27,10 +32,14 @@ class ItemsActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarItems.toolbar)
 
-        binding.appBarItems.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        binding.appBarItems.fab.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
         }
+
+        /**setting up the RecyclerView*/
+        listItems.layoutManager = LinearLayoutManager(this)
+        listItems.adapter = NoteRecyclerAdapter(this, DataManager.notes)
+
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_items)
@@ -43,6 +52,11 @@ class ItemsActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        listItems.adapter?.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
