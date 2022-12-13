@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -19,6 +20,7 @@ import com.example.notekeeperapp.adapters.NoteRecyclerAdapter
 import com.example.notekeeperapp.databinding.ActivityItemsBinding
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_items.*
+import kotlinx.android.synthetic.main.app_bar_items.*
 import kotlinx.android.synthetic.main.content_items.*
 
 class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -42,12 +44,12 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         listItems.layoutManager = LinearLayoutManager(this)
         listItems.adapter = NoteRecyclerAdapter(this, DataManager.notes)
 
-        /*val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
+        /**enables the user to open and close the navigation drawer by tapping on the icon on the top left of the toolbar*/
+        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer_layout.addDrawerListener(toggle)//checks the current state of the navigation drawer
         toggle.syncState()
 
-        nav_view.setNavigationItemSelectedListener(this)*/
+        nav_view.setNavigationItemSelectedListener(this)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -83,6 +85,9 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.nav_home -> {
+
+            }
             R.id.nav_gallery -> {
 
             }
