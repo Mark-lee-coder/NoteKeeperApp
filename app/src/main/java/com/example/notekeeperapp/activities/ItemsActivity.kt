@@ -16,7 +16,6 @@ import com.example.notekeeperapp.R
 import com.example.notekeeperapp.adapters.NoteRecyclerAdapter
 import com.example.notekeeperapp.databinding.ActivityItemsBinding
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.content_items.*
 
 class ItemsActivity : AppCompatActivity() {
@@ -42,7 +41,7 @@ class ItemsActivity : AppCompatActivity() {
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_items)
+        val navController =  findNavController(R.id.nav_host_fragment_content_items)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
