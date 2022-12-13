@@ -8,14 +8,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.notekeeperapp.DataManager
 import com.example.notekeeperapp.R
+import com.example.notekeeperapp.adapters.CourseRecyclerAdapter
 import com.example.notekeeperapp.adapters.NoteRecyclerAdapter
 import com.example.notekeeperapp.databinding.ActivityItemsBinding
 import com.google.android.material.navigation.NavigationView
@@ -27,6 +25,22 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityItemsBinding
+
+    /**the lazy keyword delays the creation of the instances until when required(onCreate() method runs)*/
+    private val noteLayoutManager by lazy {
+        LinearLayoutManager(this)
+    }
+    private val noteRecyclerAdapter by lazy {
+        NoteRecyclerAdapter(this, DataManager.notes)
+    }
+
+    private val courseLayoutManager by lazy {
+        GridLayoutManager(this, 2)
+    }
+
+    private val courseRecyclerAdapter by lazy {
+        CourseRecyclerAdapter(this, DataManager.courses.values.toList())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +54,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             startActivity(Intent(this, NoteActivity::class.java))
         }
 
-        /**setting up the RecyclerView*/
-        listItems.layoutManager = LinearLayoutManager(this)
-        listItems.adapter = NoteRecyclerAdapter(this, DataManager.notes)
+        displayNotes()
 
         /**enables the user to open and close the navigation drawer by tapping on the icon on the top left of the toolbar*/
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -57,9 +69,23 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_notes, R.id.nav_courses
             ), drawerLayout
         )
+    }
+
+    private fun displayNotes() {
+        listItems.layoutManager = noteLayoutManager //associates listView with a layout
+        listItems.adapter = noteRecyclerAdapter //associates listView with an adapter
+
+        nav_view.menu.findItem(R.id.nav_notes).isChecked = true
+    }
+
+    private fun displayCourses() {
+        listItems.layoutManager = courseLayoutManager
+        listItems.adapter = courseRecyclerAdapter
+
+        nav_view.menu.findItem(R.id.nav_courses).isChecked = true
     }
 
     override fun onResume() {
@@ -85,14 +111,11 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_home -> {
-
+            R.id.nav_notes -> {
+                displayNotes()
             }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
+            R.id.nav_courses -> {
+                displayCourses()
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
