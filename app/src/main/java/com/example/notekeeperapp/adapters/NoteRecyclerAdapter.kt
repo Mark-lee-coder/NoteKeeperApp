@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notekeeperapp.R
-import com.example.notekeeperapp.activities.MainActivity
+import com.example.notekeeperapp.activities.NoteActivity
 import com.example.notekeeperapp.files.NOTE_POSITION
 import com.example.notekeeperapp.files.NoteInfo
 
@@ -40,7 +40,7 @@ class NoteRecyclerAdapter(private val context: Context, private val notes: List<
 
         init {
             itemView.setOnClickListener {
-                val intent = Intent(context, MainActivity::class.java)
+                val intent = Intent(context, NoteActivity::class.java)
                 intent.putExtra(NOTE_POSITION, notePosition)//passes the position of the note to be displayed
                 context.startActivity(intent)
             }

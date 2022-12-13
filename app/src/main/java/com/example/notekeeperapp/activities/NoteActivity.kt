@@ -9,24 +9,24 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.notekeeperapp.DataManager
 import com.example.notekeeperapp.R
-import com.example.notekeeperapp.databinding.ActivityMainBinding
+import com.example.notekeeperapp.databinding.ActivityNoteBinding
 import com.example.notekeeperapp.files.CourseInfo
 import com.example.notekeeperapp.files.NOTE_POSITION
 import com.example.notekeeperapp.files.NoteInfo
 import com.example.notekeeperapp.files.POSITION_NOT_SET
-import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.content_note.*
 
-class MainActivity : AppCompatActivity() {
+class NoteActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityNoteBinding
     private var notePosition = POSITION_NOT_SET
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)

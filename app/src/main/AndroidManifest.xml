@@ -14,7 +14,7 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.NoteActivity"
             android:exported="true"
             android:label="Edit Note"
             android:theme="@style/Theme.NoteKeeper.NoActionBar">
@@ -36,14 +36,13 @@
         <activity
             android:name=".activities.ItemsActivity"
             android:exported="true"
-            android:label="Note Keeper App"
+            android:label="Note Keeper"
             android:theme="@style/Theme.NoteKeeper.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
