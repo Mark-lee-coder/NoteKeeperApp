@@ -12,7 +12,7 @@ import com.example.notekeeperapp.activities.NoteActivity
 import com.example.notekeeperapp.files.NOTE_POSITION
 import com.example.notekeeperapp.files.NoteInfo
 
-//kotlin uses : instead of extends keyword
+//kotlin uses : instead of extends and implements keywords
 class NoteRecyclerAdapter(private val context: Context, private val notes: List<NoteInfo>) : RecyclerView.Adapter<NoteRecyclerAdapter.ViewHolder>() {
     private val layoutInflater = LayoutInflater.from(context)
 

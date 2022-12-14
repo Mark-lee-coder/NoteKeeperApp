@@ -86,7 +86,7 @@ class NoteActivity : AppCompatActivity() {
                 moveNext()
                 true
             }
-            R.id.action_back -> {
+            R.id.action_previous -> {
                 movePrevious()
                 true
             }
@@ -117,7 +117,7 @@ class NoteActivity : AppCompatActivity() {
             }
         }
         else if (notePosition.equals(DataManager.notes.first())) {
-            val menuItem = menu?.findItem(R.id.action_back)
+            val menuItem = menu?.findItem(R.id.action_previous)
             if (menuItem != null) {
                 menuItem.icon = getDrawable(R.drawable.ic_baseline_block_24)
                 menuItem.isEnabled = false
@@ -137,6 +137,5 @@ class NoteActivity : AppCompatActivity() {
         note.title = textNoteTitle.text.toString()//takes the string value of the title that is displayed and assign it to the notes title property
         note.text = textNoteText.text.toString()
         note.course = spinnerCourses.selectedItem as CourseInfo//gives a reference to the selected course and casts it to CourseInfo
-
     }
 }
