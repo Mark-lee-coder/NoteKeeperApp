@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AddFab" parent="@style/Widget.Design.FloatingActionButton">
+        <item name="android:layout_marginEnd">@dimen/fab_margin</item>
+        <item name="srcCompat">@drawable/ic_baseline_add_24</item>
+    </style>
+</resources>
