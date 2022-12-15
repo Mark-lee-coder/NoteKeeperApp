@@ -50,6 +50,7 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_how_many_message_format">%2$d Courses and %1$d Notes</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>

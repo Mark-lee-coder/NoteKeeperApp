@@ -17,6 +17,7 @@ import com.example.notekeeperapp.adapters.CourseRecyclerAdapter
 import com.example.notekeeperapp.adapters.NoteRecyclerAdapter
 import com.example.notekeeperapp.databinding.ActivityItemsBinding
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_items.*
 import kotlinx.android.synthetic.main.app_bar_items.*
 import kotlinx.android.synthetic.main.content_items.*
@@ -34,8 +35,9 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         NoteRecyclerAdapter(this, DataManager.notes)
     }
 
+    /**course_grid_span is found in the ui_constants.xml file in values folder*/
     private val courseLayoutManager by lazy {
-        GridLayoutManager(this, 2)
+        GridLayoutManager(this, resources.getInteger(R.integer.course_grid_span))
     }
 
     private val courseRecyclerAdapter by lazy {
@@ -116,6 +118,17 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
             R.id.nav_courses -> {
                 displayCourses()
+            }
+            R.id.nav_share -> {
+                Snackbar.make(listItems, "Share where?", Snackbar.LENGTH_LONG).show()
+            }
+            R.id.nav_send -> {
+                Snackbar.make(listItems, "Send where?", Snackbar.LENGTH_LONG).show()
+            }
+            /**nav_how_many_message_format can be found in strings.xml under values folder*/
+            R.id.nav_how_many -> {
+                val message = getString(R.string.nav_how_many_message_format, DataManager.notes.size, DataManager.courses.size)
+                Snackbar.make(listItems, message, Snackbar.LENGTH_LONG).show()
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
