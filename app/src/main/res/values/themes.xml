@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.NoteKeeper" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/colorPrimary</item>
     </style>
 
     <style name="Theme.NoteKeeper" parent="Base.Theme.NoteKeeper" />
@@ -12,7 +12,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.NoteKeeper.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.NoteKeeper.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
 
     <style name="Theme.NoteKeeper.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
