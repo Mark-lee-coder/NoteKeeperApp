@@ -12,7 +12,6 @@ import com.example.notekeeperapp.databinding.ActivityNoteListBinding
 import kotlinx.android.synthetic.main.content_note_list.*
 
 class NoteListActivity : AppCompatActivity() {
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityNoteListBinding
 

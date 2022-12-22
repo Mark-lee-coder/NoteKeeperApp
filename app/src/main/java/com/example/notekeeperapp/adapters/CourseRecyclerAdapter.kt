@@ -17,9 +17,8 @@ class CourseRecyclerAdapter(private val context: Context, private val courses: L
         val itemView = layoutInflater.inflate(R.layout.item_course_list, parent, false)
         return ViewHolder(itemView)
     }
-    override fun getItemCount() : Int {
-        return courses.size
-    }
+
+    override fun getItemCount() = courses.size //a method with only one return value(returns courses.size)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val course = courses[position]

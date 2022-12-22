@@ -17,7 +17,6 @@ import com.example.notekeeperapp.files.POSITION_NOT_SET
 import kotlinx.android.synthetic.main.content_note.*
 
 class NoteActivity : AppCompatActivity() {
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityNoteBinding
     private var notePosition = POSITION_NOT_SET
@@ -37,9 +36,7 @@ class NoteActivity : AppCompatActivity() {
 
         /*if the first part before the elvis operator(?:) else the second part after the ?:*/
         /**checks if the activity has been destroyed and recreated first otherwise performs the intent*/
-        notePosition = savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET)?:intent.getIntExtra(
-            NOTE_POSITION, POSITION_NOT_SET
-        )
+        notePosition = savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET)?: intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET)
 
         if (notePosition != POSITION_NOT_SET) {
             displayNote()
@@ -108,7 +105,7 @@ class NoteActivity : AppCompatActivity() {
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         /**if statement to check if we have reached the last index in the list*/
-        if (notePosition >= DataManager.notes.lastIndex) {
+        if (DataManager.isLastNoteId(notePosition)) {
             val menuItem = menu?.findItem(R.id.action_next)
             /**if the menuItem is not null, change the next icon to block icon*/
             if (menuItem != null) {

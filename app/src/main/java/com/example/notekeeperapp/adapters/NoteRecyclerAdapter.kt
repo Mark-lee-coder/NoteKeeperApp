@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notekeeperapp.R
+import com.example.notekeeperapp.activities.ItemsActivity
 import com.example.notekeeperapp.activities.NoteActivity
 import com.example.notekeeperapp.files.NOTE_POSITION
 import com.example.notekeeperapp.files.NoteInfo
@@ -15,6 +16,7 @@ import com.example.notekeeperapp.files.NoteInfo
 //kotlin uses : instead of extends and implements keywords
 class NoteRecyclerAdapter(private val context: Context, private val notes: List<NoteInfo>) : RecyclerView.Adapter<NoteRecyclerAdapter.ViewHolder>() {
     private val layoutInflater = LayoutInflater.from(context)
+    private var onNoteSelectedListener: OnNoteSelectedListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = layoutInflater.inflate(R.layout.item_note_list, parent, false)
@@ -28,8 +30,10 @@ class NoteRecyclerAdapter(private val context: Context, private val notes: List<
         holder.notePosition = position//our holder will always know the position of the note it is currently associated with
     }
 
-    override fun getItemCount(): Int {
-        return notes.size
+    override fun getItemCount() = notes.size
+
+    fun setOnSelectedListener(listener: ItemsActivity) {
+        onNoteSelectedListener = listener
     }
 
     /**inner class can access the MainActivity class and use its properties such as context*/
@@ -40,10 +44,15 @@ class NoteRecyclerAdapter(private val context: Context, private val notes: List<
 
         init {
             itemView.setOnClickListener {
+                onNoteSelectedListener?.onNoteSelected(notes[notePosition])
                 val intent = Intent(context, NoteActivity::class.java)
                 intent.putExtra(NOTE_POSITION, notePosition)//passes the position of the note to be displayed
                 context.startActivity(intent)
             }
         }
+    }
+
+    interface OnNoteSelectedListener {
+        fun onNoteSelected(note: NoteInfo)
     }
 }

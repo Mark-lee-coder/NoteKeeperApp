@@ -16,23 +16,30 @@ import com.example.notekeeperapp.R
 import com.example.notekeeperapp.adapters.CourseRecyclerAdapter
 import com.example.notekeeperapp.adapters.NoteRecyclerAdapter
 import com.example.notekeeperapp.databinding.ActivityItemsBinding
+import com.example.notekeeperapp.files.NoteInfo
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_items.*
 import kotlinx.android.synthetic.main.app_bar_items.*
 import kotlinx.android.synthetic.main.content_items.*
 
-class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    NoteRecyclerAdapter.OnNoteSelectedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityItemsBinding
+    private val maxRecentlyViewedNotes = 5
+    private val recentlyViewedNotes = ArrayList<NoteInfo>(maxRecentlyViewedNotes)
 
     /**the lazy keyword delays the creation of the instances until when required(onCreate() method runs)*/
     private val noteLayoutManager by lazy {
         LinearLayoutManager(this)
     }
+
     private val noteRecyclerAdapter by lazy {
-        NoteRecyclerAdapter(this, DataManager.notes)
+        val adapter = NoteRecyclerAdapter(this, DataManager.loadNotes())
+        adapter.setOnSelectedListener(this)
+        adapter
     }
 
     /**course_grid_span is found in the ui_constants.xml file in values folder*/
@@ -42,6 +49,12 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     private val courseRecyclerAdapter by lazy {
         CourseRecyclerAdapter(this, DataManager.courses.values.toList())
+    }
+
+    private val recentlyViewedNoteRecyclerAdapter by lazy {
+        val adapter = NoteRecyclerAdapter(this, recentlyViewedNotes)
+        adapter.setOnSelectedListener(this)
+        adapter
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,11 +82,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val navView: NavigationView = binding.navView
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_notes, R.id.nav_courses
-            ), drawerLayout
-        )
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.nav_notes, R.id.nav_courses), drawerLayout)
     }
 
     private fun displayNotes() {
@@ -88,6 +97,13 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         listItems.adapter = courseRecyclerAdapter
 
         nav_view.menu.findItem(R.id.nav_courses).isChecked = true
+    }
+
+    private fun displayRecentlyViewedNotes() {
+        listItems.layoutManager = noteLayoutManager
+        listItems.adapter = recentlyViewedNoteRecyclerAdapter
+
+        nav_view.menu.findItem(R.id.nav_recent_notes).isChecked = true
     }
 
     override fun onResume() {
@@ -111,6 +127,16 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_notes -> {
@@ -120,7 +146,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 displayCourses()
             }
             R.id.nav_recent_notes -> {
-                Snackbar.make(listItems, "Not Available", Snackbar.LENGTH_LONG).show()
+                displayRecentlyViewedNotes()
             }
             R.id.nav_share -> {
                 Snackbar.make(listItems, "Share where?", Snackbar.LENGTH_LONG).show()
@@ -136,5 +162,28 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onNoteSelected(note: NoteInfo) {
+        addToRecentlyViewedNotes(note)
+    }
+
+    private fun addToRecentlyViewedNotes(note: NoteInfo) {
+        // Check if selection is already in the list
+        val existingIndex = recentlyViewedNotes.indexOf(note)
+        if (existingIndex == -1) {
+            // it isn't in the list...
+            // Add new one to beginning of list and remove any beyond max we want to keep
+            recentlyViewedNotes.add(0, note)
+            for (index in recentlyViewedNotes.lastIndex downTo maxRecentlyViewedNotes)
+                recentlyViewedNotes.removeAt(index)
+        }
+        else {
+            // it is in the list...
+            // Shift the ones above down the list and make it first member of the list
+            for (index in (existingIndex - 1) downTo 0)
+                recentlyViewedNotes[index + 1] = recentlyViewedNotes[index]
+            recentlyViewedNotes[0] = note
+        }
     }
 }
