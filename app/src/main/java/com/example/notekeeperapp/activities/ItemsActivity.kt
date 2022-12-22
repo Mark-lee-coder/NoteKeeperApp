@@ -119,6 +119,9 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             R.id.nav_courses -> {
                 displayCourses()
             }
+            R.id.nav_recent_notes -> {
+                Snackbar.make(listItems, "Not Available", Snackbar.LENGTH_LONG).show()
+            }
             R.id.nav_share -> {
                 Snackbar.make(listItems, "Share where?", Snackbar.LENGTH_LONG).show()
             }

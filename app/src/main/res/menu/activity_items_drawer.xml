@@ -6,12 +6,16 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_notes"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_baseline_notes_24"
             android:title="Notes" />
         <item
             android:id="@+id/nav_courses"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_baseline_notes_24"
             android:title="Courses" />
+        <item
+            android:id="@+id/nav_recent_notes"
+            android:icon="@drawable/ic_baseline_remove_red_eye_24"
+            android:title="Recently Viewed Notes" />
     </group>
 
     <item android:title="Communicate">
