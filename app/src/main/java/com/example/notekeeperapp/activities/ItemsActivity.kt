@@ -8,6 +8,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import com.example.notekeeperapp.adapters.CourseRecyclerAdapter
 import com.example.notekeeperapp.adapters.NoteRecyclerAdapter
 import com.example.notekeeperapp.databinding.ActivityItemsBinding
 import com.example.notekeeperapp.files.NoteInfo
+import com.example.notekeeperapp.viewModels.ItemsActivityViewModel
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_items.*
@@ -28,8 +30,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityItemsBinding
-    private val maxRecentlyViewedNotes = 5
-    private val recentlyViewedNotes = ArrayList<NoteInfo>(maxRecentlyViewedNotes)
+
 
     /**the lazy keyword delays the creation of the instances until when required(onCreate() method runs)*/
     private val noteLayoutManager by lazy {
@@ -52,9 +53,15 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     private val recentlyViewedNoteRecyclerAdapter by lazy {
-        val adapter = NoteRecyclerAdapter(this, recentlyViewedNotes)
+        val adapter = NoteRecyclerAdapter(this, viewModel.recentlyViewedNotes)
         adapter.setOnSelectedListener(this)
         adapter
+    }
+
+    /**the activity remains the same in case it is destroyed and recreated again(eg changing from portrait to landscape*/
+    /**a reference to an instance of ItemsActivityViewModel*/
+    private val viewModel by lazy {
+        ViewModelProviders.of(this)[ItemsActivityViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +76,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             startActivity(Intent(this, NoteActivity::class.java))
         }
 
-        displayNotes()
+        handleDisplaySelection(viewModel.navDrawerDisplaySelection)
 
         /**enables the user to open and close the navigation drawer by tapping on the icon on the top left of the toolbar*/
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -139,14 +146,10 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_notes -> {
-                displayNotes()
-            }
-            R.id.nav_courses -> {
-                displayCourses()
-            }
-            R.id.nav_recent_notes -> {
-                displayRecentlyViewedNotes()
+            /**checks if any one of these conditions has been met*/
+            R.id.nav_notes, R.id.nav_courses, R.id.nav_recent_notes -> {
+                handleDisplaySelection(item.itemId)
+                viewModel.navDrawerDisplaySelection = item.itemId//tracks the option that has been selected on the navigation drawer
             }
             R.id.nav_share -> {
                 Snackbar.make(listItems, "Share where?", Snackbar.LENGTH_LONG).show()
@@ -164,26 +167,21 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         return true
     }
 
-    override fun onNoteSelected(note: NoteInfo) {
-        addToRecentlyViewedNotes(note)
+    private fun handleDisplaySelection(itemId: Int) {
+        when (itemId) {
+            R.id.nav_notes -> {
+                displayNotes()
+            }
+            R.id.nav_courses -> {
+                displayCourses()
+            }
+            R.id.nav_recent_notes -> {
+                displayRecentlyViewedNotes()
+            }
+        }
     }
 
-    private fun addToRecentlyViewedNotes(note: NoteInfo) {
-        // Check if selection is already in the list
-        val existingIndex = recentlyViewedNotes.indexOf(note)
-        if (existingIndex == -1) {
-            // it isn't in the list...
-            // Add new one to beginning of list and remove any beyond max we want to keep
-            recentlyViewedNotes.add(0, note)
-            for (index in recentlyViewedNotes.lastIndex downTo maxRecentlyViewedNotes)
-                recentlyViewedNotes.removeAt(index)
-        }
-        else {
-            // it is in the list...
-            // Shift the ones above down the list and make it first member of the list
-            for (index in (existingIndex - 1) downTo 0)
-                recentlyViewedNotes[index + 1] = recentlyViewedNotes[index]
-            recentlyViewedNotes[0] = note
-        }
+    override fun onNoteSelected(note: NoteInfo) {
+        viewModel.addToRecentlyViewedNotes(note)
     }
 }

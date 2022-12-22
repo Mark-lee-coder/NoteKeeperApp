@@ -7,7 +7,7 @@ import com.example.notekeeperapp.files.NoteInfo
 class ItemsActivityViewModel : ViewModel() {
     var navDrawerDisplaySelection = R.id.nav_notes
     private val maxRecentlyViewedNotes = 5
-    private val recentlyViewedNotes = ArrayList<NoteInfo>(maxRecentlyViewedNotes)
+    val recentlyViewedNotes = ArrayList<NoteInfo>(maxRecentlyViewedNotes)
 
     fun addToRecentlyViewedNotes(note: NoteInfo) {
         // Check if selection is already in the list
