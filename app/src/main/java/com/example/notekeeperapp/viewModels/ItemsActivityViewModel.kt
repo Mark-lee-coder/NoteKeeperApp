@@ -1,15 +1,19 @@
 package com.example.notekeeperapp.viewModels
 
 import android.os.Bundle
+import android.provider.ContactsContract.RawContacts.Data
 import androidx.lifecycle.ViewModel
+import com.example.notekeeperapp.DataManager
 import com.example.notekeeperapp.R
 import com.example.notekeeperapp.files.NoteInfo
 
 class ItemsActivityViewModel : ViewModel() {
-    private val navDrawerDisplaySelectionName = "com.example.notekeeperapp.viewModels.ItemsActivityViewModel.navDrawerDisplaySelection"
-    var navDrawerDisplaySelection = R.id.nav_notes
     private val maxRecentlyViewedNotes = 5
     val recentlyViewedNotes = ArrayList<NoteInfo>(maxRecentlyViewedNotes)
+    var navDrawerDisplaySelectionName = "com.example.notekeeperapp.viewModels.ItemsActivityViewModel.navDrawerDisplaySelection"
+    var recentlyViewedNoteIdsName = "com.example.notekeeperapp.viewModels.ItemsActivityViewModel.recentlyViewedNoteIds"
+    var navDrawerDisplaySelection = R.id.nav_notes
+    var isNewlyCreated = true
 
     fun addToRecentlyViewedNotes(note: NoteInfo) {
         // Check if selection is already in the list
@@ -32,9 +36,21 @@ class ItemsActivityViewModel : ViewModel() {
 
     fun saveState(outState: Bundle) {
         outState.putInt(navDrawerDisplaySelectionName, navDrawerDisplaySelection)
+        val noteIds = DataManager.noteIdsAsIntArray(recentlyViewedNotes)
+        outState.putIntArray(recentlyViewedNoteIdsName, noteIds)
     }
 
     fun restoreState(savedInstanceState: Bundle) {
         navDrawerDisplaySelection = savedInstanceState.getInt(navDrawerDisplaySelectionName)
+        val noteIds = savedInstanceState.getIntArray(recentlyViewedNoteIdsName)
+        /**let is often used for executing a code block only with non-null values
+        To perform actions on a non-null object, use the safe call operator ?. on it and call let with the actions in its lambda
+        Another case for using let is introducing local variables with a limited scope for improving code readability*/
+        val noteList = noteIds?.let {
+            DataManager.loadNotes(*it)
+        }
+        noteList?.let {
+            recentlyViewedNotes.addAll(it)
+        }
     }
 }

@@ -75,9 +75,10 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             startActivity(Intent(this, NoteActivity::class.java))
         }
 
-        if (savedInstanceState != null) {
+        if (viewModel.isNewlyCreated && savedInstanceState != null) {
             viewModel.restoreState(savedInstanceState)
         }
+        viewModel.isNewlyCreated = false
 
         handleDisplaySelection(viewModel.navDrawerDisplaySelection)
 

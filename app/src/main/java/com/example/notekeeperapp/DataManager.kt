@@ -14,11 +14,6 @@ object DataManager {
         initializeNotes()
     }
 
-    fun loadNotes(): List<NoteInfo> {
-        simulateLoadDelay()
-        return notes
-    }
-
     fun loadNotes(vararg noteIds: Int): List<NoteInfo> {
         simulateLoadDelay()
         val noteList: List<NoteInfo>
