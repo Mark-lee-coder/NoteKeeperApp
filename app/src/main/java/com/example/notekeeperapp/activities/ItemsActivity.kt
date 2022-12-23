@@ -2,6 +2,7 @@ package com.example.notekeeperapp.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -27,10 +28,8 @@ import kotlinx.android.synthetic.main.content_items.*
 
 class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     NoteRecyclerAdapter.OnNoteSelectedListener {
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityItemsBinding
-
 
     /**the lazy keyword delays the creation of the instances until when required(onCreate() method runs)*/
     private val noteLayoutManager by lazy {
@@ -76,6 +75,10 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             startActivity(Intent(this, NoteActivity::class.java))
         }
 
+        if (savedInstanceState != null) {
+            viewModel.restoreState(savedInstanceState)
+        }
+
         handleDisplaySelection(viewModel.navDrawerDisplaySelection)
 
         /**enables the user to open and close the navigation drawer by tapping on the icon on the top left of the toolbar*/
@@ -90,6 +93,14 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(R.id.nav_notes, R.id.nav_courses), drawerLayout)
+    }
+
+    /**storing the app in a durable state*/
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+       if (outState != null) {
+           viewModel.saveState(outState)
+       }
     }
 
     private fun displayNotes() {

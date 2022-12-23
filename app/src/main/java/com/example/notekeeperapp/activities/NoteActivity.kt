@@ -1,10 +1,12 @@
 package com.example.notekeeperapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.core.view.WindowCompat
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.notekeeperapp.DataManager
@@ -14,6 +16,7 @@ import com.example.notekeeperapp.files.CourseInfo
 import com.example.notekeeperapp.files.NOTE_POSITION
 import com.example.notekeeperapp.files.NoteInfo
 import com.example.notekeeperapp.files.POSITION_NOT_SET
+import kotlinx.android.synthetic.main.activity_items.*
 import kotlinx.android.synthetic.main.content_note.*
 
 class NoteActivity : AppCompatActivity() {
