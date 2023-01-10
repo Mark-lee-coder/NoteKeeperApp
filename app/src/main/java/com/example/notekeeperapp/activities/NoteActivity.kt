@@ -1,12 +1,11 @@
 package com.example.notekeeperapp.activities
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
 import androidx.core.view.WindowCompat
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.notekeeperapp.DataManager
@@ -16,13 +15,17 @@ import com.example.notekeeperapp.files.CourseInfo
 import com.example.notekeeperapp.files.NOTE_POSITION
 import com.example.notekeeperapp.files.NoteInfo
 import com.example.notekeeperapp.files.POSITION_NOT_SET
-import kotlinx.android.synthetic.main.activity_items.*
+import com.example.notekeeperapp.pseudomanager.PseudoLocationManager
 import kotlinx.android.synthetic.main.content_note.*
 
 class NoteActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityNoteBinding
+    private val tag = this::class.simpleName
     private var notePosition = POSITION_NOT_SET
+    var locManager = PseudoLocationManager(this) { lat, long ->
+        Log.d(tag, "Location Callback Lat: $lat Long: $long")
+    }//inside {} is a lambda expression
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -47,6 +50,18 @@ class NoteActivity : AppCompatActivity() {
         else {
             createNewNote()
         }
+    }
+
+    /**when adding code to onStart(), onResume() and onCreate(), do it after the call to the base class method eg super.onStart()*/
+    override fun onStart() {
+        super.onStart()
+        locManager.start()
+    }
+
+    /**when adding code to onPause(), onStop() and onDestroy(), do it before the call to the base class method eg super.onStop()*/
+    override fun onStop() {
+        locManager.stop()
+        super.onStop()
     }
 
     private fun createNewNote() {

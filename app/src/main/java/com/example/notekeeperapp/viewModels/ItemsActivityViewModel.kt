@@ -1,7 +1,6 @@
 package com.example.notekeeperapp.viewModels
 
 import android.os.Bundle
-import android.provider.ContactsContract.RawContacts.Data
 import androidx.lifecycle.ViewModel
 import com.example.notekeeperapp.DataManager
 import com.example.notekeeperapp.R
@@ -47,7 +46,7 @@ class ItemsActivityViewModel : ViewModel() {
         To perform actions on a non-null object, use the safe call operator ?. on it and call let with the actions in its lambda
         Another case for using let is introducing local variables with a limited scope for improving code readability*/
         val noteList = noteIds?.let {
-            DataManager.loadNotes(*it)
+            DataManager.loadNotes(*it)//*is a spread operator that expands the array
         }
         noteList?.let {
             recentlyViewedNotes.addAll(it)

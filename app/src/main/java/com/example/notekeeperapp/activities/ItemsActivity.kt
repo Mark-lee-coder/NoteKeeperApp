@@ -98,9 +98,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     /**storing the app in a durable state*/
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-       if (outState != null) {
            viewModel.saveState(outState)
-       }
     }
 
     private fun displayNotes() {
