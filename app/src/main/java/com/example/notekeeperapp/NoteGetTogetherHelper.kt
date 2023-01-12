@@ -18,7 +18,7 @@ class NoteGetTogetherHelper(val context: Context, private val lifecycle: Lifecyc
     private val tag = this::class.simpleName
     var currentLat = 0.0
     var currentLong = 0.0
-    val msgManager = PseudoMessagingManager(context)
+    private val msgManager = PseudoMessagingManager(context)
     var msgConnection : PseudoMessagingConnection? = null
     private val locManager = PseudoLocationManager(context) { lat, long ->
         currentLat = lat
