@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.notekeeperapp.DataManager
+import com.example.notekeeperapp.NoteGetTogetherHelper
 import com.example.notekeeperapp.R
 import com.example.notekeeperapp.databinding.ActivityNoteBinding
 import com.example.notekeeperapp.files.CourseInfo
@@ -23,9 +24,7 @@ class NoteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNoteBinding
     private val tag = this::class.simpleName
     private var notePosition = POSITION_NOT_SET
-    var locManager = PseudoLocationManager(this) { lat, long ->
-        Log.d(tag, "Location Callback Lat: $lat Long: $long")
-    }//inside {} is a lambda expression
+    val noteGetTogetherHelper = NoteGetTogetherHelper(this, lifecycle)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -50,18 +49,6 @@ class NoteActivity : AppCompatActivity() {
         else {
             createNewNote()
         }
-    }
-
-    /**when adding code to onStart(), onResume() and onCreate(), do it after the call to the base class method eg super.onStart()*/
-    override fun onStart() {
-        super.onStart()
-        locManager.start()
-    }
-
-    /**when adding code to onPause(), onStop() and onDestroy(), do it before the call to the base class method eg super.onStop()*/
-    override fun onStop() {
-        locManager.stop()
-        super.onStop()
     }
 
     private fun createNewNote() {
@@ -103,6 +90,10 @@ class NoteActivity : AppCompatActivity() {
             }
             R.id.action_previous -> {
                 movePrevious()
+                true
+            }
+            R.id.action_get_together -> {
+                noteGetTogetherHelper.sendMessage(DataManager.loadNote(notePosition))
                 true
             }
             else -> super.onOptionsItemSelected(item)
