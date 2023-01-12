@@ -16,10 +16,6 @@
             android:id="@+id/nav_recent_notes"
             android:icon="@drawable/ic_baseline_remove_red_eye_24"
             android:title="Recently Viewed Notes" />
-        <item
-            android:id="@+id/action_get_together"
-            android:icon="@drawable/orange_rectangle"
-            android:title="Get Together" />
     </group>
 
     <item android:title="Communicate">

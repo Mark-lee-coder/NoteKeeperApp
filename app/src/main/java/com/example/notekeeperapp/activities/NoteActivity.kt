@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.ui.AppBarConfiguration
@@ -88,12 +89,9 @@ class NoteActivity : AppCompatActivity() {
                 moveNext()
                 true
             }
-            R.id.action_previous -> {
-                movePrevious()
-                true
-            }
             R.id.action_get_together -> {
                 noteGetTogetherHelper.sendMessage(DataManager.loadNote(notePosition))
+                Toast.makeText(applicationContext, "Developer Feature!!", Toast.LENGTH_LONG).show()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -106,12 +104,6 @@ class NoteActivity : AppCompatActivity() {
         invalidateOptionsMenu()//called when the user gets to the end of the note
     }
 
-    private fun movePrevious() {
-        --notePosition
-        displayNote()
-        invalidateOptionsMenu()
-    }
-
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         /**if statement to check if we have reached the last index in the list*/
         if (DataManager.isLastNoteId(notePosition)) {
@@ -119,13 +111,6 @@ class NoteActivity : AppCompatActivity() {
             /**if the menuItem is not null, change the next icon to block icon*/
             if (menuItem != null) {
                 menuItem.icon = getDrawable(R.drawable.ic_baseline_block_24)//changes forward arrow to block arrow at the end of the list
-                menuItem.isEnabled = false
-            }
-        }
-        else if (notePosition.equals(DataManager.notes.first())) {
-            val menuItem = menu?.findItem(R.id.action_previous)
-            if (menuItem != null) {
-                menuItem.icon = getDrawable(R.drawable.ic_baseline_block_24)
                 menuItem.isEnabled = false
             }
         }

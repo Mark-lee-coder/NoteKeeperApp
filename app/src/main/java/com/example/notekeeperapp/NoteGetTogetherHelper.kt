@@ -36,8 +36,13 @@ class NoteGetTogetherHelper(val context: Context, private val lifecycle: Lifecyc
         Log.d(tag, "startHandler")
         locManager.start()
         msgManager.connect { connection ->
-            Log.d(tag, "Connection callback")
-            msgConnection = connection
+            Log.d(tag, "Connection callback - Lifecycle state: ${lifecycle.currentState}")
+            if(lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                msgConnection = connection
+            }
+            else {
+                msgConnection?.disconnect()
+            }
         }
     }
 
