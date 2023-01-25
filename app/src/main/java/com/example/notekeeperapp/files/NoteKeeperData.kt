@@ -1,5 +1,7 @@
 package com.example.notekeeperapp.files
 
+import android.graphics.Color
+
 //class declaration with a method that has a return value
 data class CourseInfo (val courseId: String, val title: String) {
     override fun toString(): String {
@@ -8,4 +10,4 @@ data class CourseInfo (val courseId: String, val title: String) {
 }
 
 //class declaration without a method
-data class NoteInfo(var course: CourseInfo? = null, var title: String? = null, var text: String? = null)
+data class NoteInfo(var course: CourseInfo? = null, var title: String? = null, var text: String? = null, var color: Int = Color.TRANSPARENT)

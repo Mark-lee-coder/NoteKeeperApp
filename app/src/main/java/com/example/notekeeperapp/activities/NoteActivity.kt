@@ -1,7 +1,7 @@
 package com.example.notekeeperapp.activities
 
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
@@ -10,14 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.notekeeperapp.DataManager
-import com.example.notekeeperapp.NoteGetTogetherHelper
 import com.example.notekeeperapp.R
+import com.example.notekeeperapp.classes.NoteGetTogetherHelper
 import com.example.notekeeperapp.databinding.ActivityNoteBinding
 import com.example.notekeeperapp.files.CourseInfo
 import com.example.notekeeperapp.files.NOTE_POSITION
 import com.example.notekeeperapp.files.NoteInfo
 import com.example.notekeeperapp.files.POSITION_NOT_SET
-import com.example.notekeeperapp.pseudomanager.PseudoLocationManager
 import kotlinx.android.synthetic.main.content_note.*
 
 class NoteActivity : AppCompatActivity() {
@@ -25,7 +24,8 @@ class NoteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNoteBinding
     private val tag = this::class.simpleName
     private var notePosition = POSITION_NOT_SET
-    val noteGetTogetherHelper = NoteGetTogetherHelper(this, lifecycle)
+    private var noteColor: Int = Color.TRANSPARENT
+    private val noteGetTogetherHelper = NoteGetTogetherHelper(this, lifecycle)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -50,6 +50,14 @@ class NoteActivity : AppCompatActivity() {
         else {
             createNewNote()
         }
+
+        colorSelector.addListener { color ->
+            noteColor = color
+        }
+
+//        colorSelector.addListener { color ->
+//            noteColor = color
+//        }
     }
 
     private fun createNewNote() {
@@ -67,6 +75,8 @@ class NoteActivity : AppCompatActivity() {
         val note = DataManager.notes[notePosition]//gets the note that corresponds with the note position selected
         textNoteTitle.setText(note.title)//display the title of the note selected within the views on the activity
         textNoteText.setText(note.text)//display the text of the note itself
+        colorSelector.selectedColorValue = note.color
+        noteColor = note.color
 
         /**display the appropriate course for the note displayed*/
         val coursePosition = DataManager.courses.values.indexOf(note.course)//get the position of the appropriate course
@@ -128,5 +138,6 @@ class NoteActivity : AppCompatActivity() {
         note.title = textNoteTitle.text.toString()//takes the string value of the title that is displayed and assign it to the notes title property
         note.text = textNoteText.text.toString()
         note.course = spinnerCourses.selectedItem as CourseInfo//gives a reference to the selected course and casts it to CourseInfo
+        note.color = this.noteColor
     }
 }

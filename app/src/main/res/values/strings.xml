@@ -55,4 +55,17 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="todo">TODO</string>
+    <string name="enabled">Enabled</string>
+    <string name="note_color">Note Color</string>
+    <string name="textview">TextView</string>
+    
+    <string-array name="note_color_array">
+        <item>#E57373</item>
+        <item>#BA68C8</item>
+        <item>#64B5F6</item>
+        <item>#81C784</item>
+        <item>#FFF176</item>
+        <item>#FFB47D</item>
+        <item>#90A4AE</item>
+    </string-array>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.notekeeperapp
+package com.example.notekeeperapp.classes
 
 import android.content.Context
 import android.util.Log
