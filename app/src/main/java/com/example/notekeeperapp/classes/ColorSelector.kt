@@ -25,7 +25,6 @@ constructor(context: Context, attributeSet: AttributeSet? = null, defStyle: Int 
         orientation = HORIZONTAL
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.color_selector, this)
-
         selectedColor.setBackgroundColor(listOfColors[selectedColorIndex])
 
         colorSelectorPreviousArrow.setOnClickListener {
@@ -42,18 +41,18 @@ constructor(context: Context, attributeSet: AttributeSet? = null, defStyle: Int 
     }
 
     var selectedColorValue: Int = android.R.color.transparent
-    set(value) {
-        var index = listOfColors.indexOf(value)
-        if (index == -1) {
-            colorEnabled.isChecked = false
-            index = 0
+        set(value) {
+            var index = listOfColors.indexOf(value)
+            if (index == -1) {
+                colorEnabled.isChecked = false
+                index = 0
+            }
+            else {
+                colorEnabled.isChecked = true
+            }
+            selectedColorIndex = index
+            selectedColor.setBackgroundColor(listOfColors[selectedColorIndex])
         }
-        else {
-            colorEnabled.isChecked = true
-        }
-        selectedColorIndex = index
-        selectedColor.setBackgroundColor(listOfColors[selectedColorIndex])
-    }
 
     private var colorSelectListeners: ArrayList<(Int) -> Unit> = arrayListOf()
 

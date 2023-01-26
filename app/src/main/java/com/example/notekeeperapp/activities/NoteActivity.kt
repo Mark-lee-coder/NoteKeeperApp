@@ -1,17 +1,16 @@
 package com.example.notekeeperapp.activities
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.notekeeperapp.DataManager
 import com.example.notekeeperapp.R
-import com.example.notekeeperapp.classes.NoteGetTogetherHelper
 import com.example.notekeeperapp.databinding.ActivityNoteBinding
 import com.example.notekeeperapp.files.CourseInfo
 import com.example.notekeeperapp.files.NOTE_POSITION
@@ -22,10 +21,8 @@ import kotlinx.android.synthetic.main.content_note.*
 class NoteActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityNoteBinding
-    private val tag = this::class.simpleName
     private var notePosition = POSITION_NOT_SET
     private var noteColor: Int = Color.TRANSPARENT
-    private val noteGetTogetherHelper = NoteGetTogetherHelper(this, lifecycle)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -54,10 +51,6 @@ class NoteActivity : AppCompatActivity() {
         colorSelector.addListener { color ->
             noteColor = color
         }
-
-//        colorSelector.addListener { color ->
-//            noteColor = color
-//        }
     }
 
     private fun createNewNote() {
@@ -99,9 +92,8 @@ class NoteActivity : AppCompatActivity() {
                 moveNext()
                 true
             }
-            R.id.action_get_together -> {
-                noteGetTogetherHelper.sendMessage(DataManager.loadNote(notePosition))
-                Toast.makeText(applicationContext, "Developer Feature!!", Toast.LENGTH_LONG).show()
+            R.id.action_home -> {
+                startActivity(Intent(this, ItemsActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

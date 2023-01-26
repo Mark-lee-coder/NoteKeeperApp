@@ -3,16 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.notekeeper.activities.MainActivity">
     <item
-        android:id="@+id/action_get_together"
-        android:icon="@drawable/ic_baseline_group_24"
-        android:title="Get Together"
+        android:id="@+id/action_home"
+        android:title="Home"
+        android:icon="@drawable/ic_baseline_home_24"
         app:showAsAction="ifRoom|withText" />
+
     <item
         android:id="@+id/action_next"
         android:icon="@drawable/ic_baseline_arrow_forward_24"
         android:orderInCategory="102"
         android:title="Next"
         app:showAsAction="ifRoom|withText" />
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="103"
