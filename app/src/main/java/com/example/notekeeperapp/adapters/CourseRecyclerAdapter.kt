@@ -10,7 +10,7 @@ import com.example.notekeeperapp.R
 import com.example.notekeeperapp.files.CourseInfo
 import com.google.android.material.snackbar.Snackbar
 
-class CourseRecyclerAdapter(private val context: Context, private val courses: List<CourseInfo>) : RecyclerView.Adapter<CourseRecyclerAdapter.ViewHolder>() {
+class CourseRecyclerAdapter(context: Context, private val courses: List<CourseInfo>) : RecyclerView.Adapter<CourseRecyclerAdapter.ViewHolder>() {
     private val layoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
